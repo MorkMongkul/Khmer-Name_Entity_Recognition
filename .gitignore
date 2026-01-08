@@ -1,0 +1,27 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+
+# Environment
+.env
+
+# Models (large files)
+*.pt
+*.pth
+*.model
+
+# Database
+*.db
+*.sqlite
+
+# IDE
+.vscode/
+.idea/
+
+# Docker
+*.log
