@@ -16,6 +16,8 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+    networks:
+      - khmer-ner-network
 
   backend:
     build:
@@ -37,6 +39,8 @@ services:
       db:
         condition: service_healthy
     command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+    networks:
+      - khmer-ner-network
 
   pgadmin:
     image: dpage/pgadmin4:latest
@@ -50,18 +54,27 @@ services:
       - db
     volumes:
       - pgadmin_data:/var/lib/pgadmin
+    networks:
+      - khmer-ner-network
 
-  # Optional: Frontend service
-  # frontend:
-  #   build:
-  #     context: ./frontend
-  #     dockerfile: Dockerfile
-  #   container_name: khmer_ner_frontend
-  #   ports:
-  #     - "3000:3000"
-  #   depends_on:
-  #     - backend
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: khmer_ner_frontend
+    ports:
+      - "3000:80"
+    environment:
+      - VITE_API_URL=http://backend:8000
+    depends_on:
+      - backend
+    networks:
+      - khmer-ner-network
 
 volumes:
   postgres_data:
   pgadmin_data:
+
+networks:
+  khmer-ner-network:
+    driver: bridge
