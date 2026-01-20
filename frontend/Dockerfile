@@ -1,31 +1,43 @@
-# Build stage
+# Stage 1: Build stage
 FROM node:20-alpine AS build
 
+# 1. Set the working directory
 WORKDIR /app
 
-# Copy package files
-COPY package.json package-lock.json* ./
+# 2. Accept build-time arguments
+# These must match the names in your docker-compose 'args' section
+ARG VITE_API_URL
 
-# Install dependencies (including dev dependencies for build)
+# 3. Copy package files and install dependencies
+# Using 'npm ci' ensures a clean, reproducible install from package-lock.json
+COPY package.json package-lock.json* ./
 RUN npm ci
 
-# Copy source code
+# 4. Copy the rest of the source code
+# Ensure you have a .dockerignore to skip node_modules and dist
 COPY . .
 
-# Build the application
+# 5. Set Environment Variable for the build process
+# Vite requires variables to be present DURING the build command
+ENV VITE_API_URL=$VITE_API_URL
+
+# 6. Build the application
 RUN npm run build
 
-# Production stage
+
+# Stage 2: Production stage (Nginx)
 FROM nginx:alpine
 
-# Copy built files
+# 7. Copy built static files from the build stage
+# Vite outputs to 'dist/' by default
 COPY --from=build /app/dist /usr/share/nginx/html
 
-# Copy nginx config
+# 8. Copy your custom nginx config
+# This is crucial for handling React Router / Single Page App routing
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 
-# Add security headers
-RUN echo 'server_tokens off;' > /etc/nginx/conf.d/security.conf
+# 9. Security: Disable Nginx version tagging in headers
+RUN sed -i '1i server_tokens off;' /etc/nginx/conf.d/default.conf
 
 EXPOSE 80
 

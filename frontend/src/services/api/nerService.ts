@@ -2,9 +2,16 @@
 import axios from "axios";
 import { Entity, NERResponse } from "../../types/ner";
 
-const API_BASE_URL =
-  import.meta.env.VITE_API_URL || "http://localhost:8000/api/v1";
+/**
+ * FIX 1: Vite Prefix Requirement
+ * Vite only exposes variables starting with VITE_ to the client.
+ * Using a fallback to 'http://localhost:8000' ensures local dev works.
+ */
+const BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:8000";
 
+/**
+ * History Data Interfaces
+ */
 export interface HistoryItem {
   id: string | number;
   text: string;
@@ -26,28 +33,37 @@ interface HistoryApiItem {
   created_at: string;
 }
 
+/**
+ * FIX 2: Centralized Axios Instance
+ * Adding '/api/v1' here means you don't have to repeat it in every call.
+ */
 const api = axios.create({
-  baseURL: API_BASE_URL,
-  headers: { "Content-Type": "application/json" },
+  baseURL: `${BASE_URL}/api/v1`,
+  headers: {
+    "Content-Type": "application/json",
+  },
 });
 
 export const nerService = {
+  /**
+   * Predict Named Entities
+   * Path: POST /api/v1/predict
+   */
   async predict(text: string): Promise<NERResponse> {
     const response = await api.post<NERResponse>("/predict", { text });
     const data = response.data;
 
-    // If backend returns word instead of text, map it.
+    // Logic to handle potential variations in backend field names (word vs text)
     const fixedEntities = data.entities.map((e: any) => {
       const mappedText =
-        e.text && e.text.trim() !== ""
-          ? e.text
-          : e.word && e.word.trim() !== ""
-          ? e.word
-          : "";
+        e.text && e.text.trim() !== "" ? e.text
+        : e.word && e.word.trim() !== "" ? e.word
+        : "";
 
       return {
         ...e,
         text: mappedText,
+        confidence: e.confidence ?? 1.0,
       };
     });
 
@@ -57,10 +73,14 @@ export const nerService = {
     };
   },
 
+  /**
+   * Fetch Prediction History
+   * Path: GET /api/v1/history?skip=0&limit=50
+   */
   async getHistory(skip = 0, limit = 50): Promise<HistoryItem[]> {
-    const response = await api.get<HistoryApiItem[]>(
-      `/history?skip=${skip}&limit=${limit}`
-    );
+    const response = await api.get<HistoryApiItem[]>("/history", {
+      params: { skip, limit },
+    });
 
     return response.data.map((item) => ({
       id: item.id,
@@ -70,7 +90,7 @@ export const nerService = {
         label: p.label,
         start: p.start ?? 0,
         end: p.end ?? 0,
-        confidence: 1,
+        confidence: 1.0,
       })),
       processing_time: item.processing_time,
       created_at: item.created_at,
