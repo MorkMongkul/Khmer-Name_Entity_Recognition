@@ -15,7 +15,6 @@ export function CleanInputPanel({
   onTextChange,
   onPredict,
   onFilePredict,
-  className = "",
   isLoading,
 }: CleanInputPanelProps) {
   const [dragActive, setDragActive] = useState(false);
@@ -119,9 +118,9 @@ export function CleanInputPanel({
         onDrop={handleDrop}>
         <div
           className={`border-2 border-dashed rounded-xl p-6 text-center transition-all ${
-            dragActive
-              ? "border-blue-500 bg-blue-50"
-              : "border-gray-300 hover:border-gray-400"
+            dragActive ?
+              "border-blue-500 bg-blue-50"
+            : "border-gray-300 hover:border-gray-400"
           }`}>
           <Upload className="h-10 w-10 text-gray-400 mx-auto mb-3" />
           <p className="text-gray-600 mb-2">
@@ -148,14 +147,12 @@ export function CleanInputPanel({
             onClick={onPredict}
             disabled={isLoading || !text.trim()}
             className="flex-1 bg-gradient-to-r from-blue-600 to-blue-700 text-white px-6 py-3 rounded-xl hover:from-blue-700 hover:to-blue-800 disabled:opacity-50 disabled:cursor-not-allowed transition-all flex items-center justify-center font-semibold">
-            {isLoading ? (
+            {isLoading ?
               <>
                 <Loader2 className="h-5 w-5 animate-spin mr-2" />
                 Processing...
               </>
-            ) : (
-              "Detect Entities"
-            )}
+            : "Detect Entities"}
           </button>
 
           {text && (

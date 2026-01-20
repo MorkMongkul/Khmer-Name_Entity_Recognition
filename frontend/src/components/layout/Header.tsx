@@ -1,4 +1,4 @@
-import { Brain, Menu, X } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
@@ -16,8 +16,6 @@ export function Header() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           <Link to="/" className="flex items-center space-x-2">
-            {/* Brain Logo */}
-            {/* <Brain className="h-8 w-8 text-blue-600" /> */}
             <div>
               <h1 className="text-xl font-bold text-gray-900">
                 Khmer<span className="text-blue-600">NER</span>
@@ -29,21 +27,19 @@ export function Header() {
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-8">
             {navItems.map((item) =>
-              item.href.startsWith("#") ? (
+              item.href.startsWith("#") ?
                 <a
                   key={item.label}
                   href={item.href}
                   className="text-gray-700 hover:text-blue-600 transition-colors duration-200 text-sm font-medium">
                   {item.label}
                 </a>
-              ) : (
-                <Link
+              : <Link
                   key={item.label}
                   to={item.href}
                   className="text-gray-700 hover:text-blue-600 transition-colors duration-200 text-sm font-medium">
                   {item.label}
-                </Link>
-              )
+                </Link>,
             )}
             <Link
               to="/demo"
@@ -56,11 +52,9 @@ export function Header() {
           <button
             className="md:hidden p-2"
             onClick={() => setIsMenuOpen(!isMenuOpen)}>
-            {isMenuOpen ? (
+            {isMenuOpen ?
               <X className="h-6 w-6" />
-            ) : (
-              <Menu className="h-6 w-6" />
-            )}
+            : <Menu className="h-6 w-6" />}
           </button>
         </div>
 
@@ -69,7 +63,7 @@ export function Header() {
           <div className="md:hidden border-t border-gray-100 py-4">
             <div className="flex flex-col space-y-4">
               {navItems.map((item) =>
-                item.href.startsWith("#") ? (
+                item.href.startsWith("#") ?
                   <a
                     key={item.label}
                     href={item.href}
@@ -77,15 +71,13 @@ export function Header() {
                     onClick={() => setIsMenuOpen(false)}>
                     {item.label}
                   </a>
-                ) : (
-                  <Link
+                : <Link
                     key={item.label}
                     to={item.href}
                     className="text-gray-700 hover:text-blue-600 py-2"
                     onClick={() => setIsMenuOpen(false)}>
                     {item.label}
-                  </Link>
-                )
+                  </Link>,
               )}
               <Link
                 to="/demo"

@@ -17,11 +17,9 @@ interface ResultsVisualizerProps {
 }
 
 export function ResultsVisualizer({
-  text,
   entities,
   processingTime,
   wordCount,
-  entityCount,
 }: ResultsVisualizerProps) {
   const getEntityColor = (label: string) => {
     if (label === "B-PER" || label === "I-PER") {
@@ -65,18 +63,16 @@ export function ResultsVisualizer({
               className={`p-2 ${
                 hasEntities ? "bg-emerald-50" : "bg-gray-50"
               } rounded-lg`}>
-              {hasEntities ? (
+              {hasEntities ?
                 <CheckCircle className="h-5 w-5 text-emerald-600" />
-              ) : (
-                <AlertCircle className="h-5 w-5 text-gray-400" />
-              )}
+              : <AlertCircle className="h-5 w-5 text-gray-400" />}
             </div>
             <div>
               <h3 className="font-semibold text-gray-900">Detected Entities</h3>
               <p className="text-sm text-gray-500">
-                {hasEntities
-                  ? `${nonOEntities.length} entities found`
-                  : "No entities detected"}
+                {hasEntities ?
+                  `${nonOEntities.length} entities found`
+                : "No entities detected"}
               </p>
             </div>
           </div>
@@ -113,7 +109,7 @@ export function ResultsVisualizer({
 
       {/* Entity List */}
       <div className="p-6">
-        {hasEntities ? (
+        {hasEntities ?
           <>
             <div className="space-y-3 max-h-[400px] overflow-y-auto pr-2">
               {nonOEntities.map((entity, index) => {
@@ -169,8 +165,7 @@ export function ResultsVisualizer({
               </div>
             </div>
           </>
-        ) : (
-          <div className="text-center py-8">
+        : <div className="text-center py-8">
             <div className="text-4xl mb-4">🔍</div>
             <p className="text-gray-600 mb-2">No entities detected</p>
             <p className="text-sm text-gray-500">
@@ -178,7 +173,7 @@ export function ResultsVisualizer({
               in this text.
             </p>
           </div>
-        )}
+        }
       </div>
     </div>
   );
