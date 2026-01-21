@@ -3,6 +3,7 @@ import { Users, GraduationCap, BookOpen } from "lucide-react";
 const teamMembers = [
   { name: "MORK Mongkul", id: "e20210249" },
   { name: "PHALLY Makara", id: "e20211154" },
+  { name: "OEUN Pao", id: "e20210635" },
 ];
 
 const lecturers = [
