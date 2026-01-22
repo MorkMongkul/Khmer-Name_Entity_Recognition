@@ -4,6 +4,7 @@ const teamMembers = [
   { name: "MORK Mongkul", id: "e20210249" },
   { name: "PHALLY Makara", id: "e20211154" },
   { name: "Phao Chanthin", id: "e20210227" },
+  { name: "Mak Nimol", id: "e20211155" }
 ];
 
 const lecturers = [
