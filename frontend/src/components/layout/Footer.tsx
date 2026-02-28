@@ -1,4 +1,4 @@
-import { Github, FileText, University } from 'lucide-react';
+import { Github, FileText } from 'lucide-react';
 
 export function Footer() {
   return (
@@ -8,12 +8,10 @@ export function Footer() {
           {/* Project Info */}
           <div>
             <div className="flex items-center space-x-2 mb-4">
-              <University className="h-6 w-6" />
-              <h3 className="text-lg font-semibold">Khmer NER Project</h3>
+              <h3 className="text-lg font-semibold">Khmer NER</h3>
             </div>
             <p className="text-gray-400 text-sm">
-              Advanced NLP research focusing on Khmer language Named Entity Recognition.
-              Built with FastText + BiLSTM-CRF architecture.
+              Khmer language Named Entity Recognition application.
             </p>
           </div>
 
@@ -48,14 +46,14 @@ export function Footer() {
               </a>
             </div>
             <p className="text-gray-400 text-sm mt-4">
-              © {new Date().getFullYear()} AMS B-06 Group. All rights reserved.
+              © {new Date().getFullYear()} All rights reserved.
             </p>
           </div>
         </div>
 
         {/* Copyright */}
         <div className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-500 text-sm">
-          <p>Natural Language Processing Course Project | Dr. KHON Vanny | M. TOUCH Sopheak</p>
+          <p>Khmer Named Entity Recognition</p>
         </div>
       </div>
     </footer>
